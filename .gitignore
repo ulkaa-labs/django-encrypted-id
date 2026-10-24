@@ -5,8 +5,11 @@ __pycache__/
 
 # C extensions
 *.so
-.doit.db
 tests/db.sqlite3
+
+# Virtual environments
+.venv/
+venv/
 
 # Distribution / packaging
 .Python
@@ -42,6 +45,7 @@ htmlcov/
 .coverage
 .coverage.*
 .cache
+.pytest_cache/
 nosetests.xml
 coverage.xml
 *,cover

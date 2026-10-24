@@ -1,26 +1,30 @@
-"""tekey URL Configuration
+"""URL configuration for the encrypted_id test project."""
 
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/1.8/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  url(r'^$', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  url(r'^$', Home.as_view(), name='home')
-Including another URLconf
-    1. Add an import:  from blog import urls as blog_urls
-    2. Add a URL to urlpatterns:  url(r'^blog/', include(blog_urls))
-"""
-from django.conf.urls import include, url
 from django.contrib import admin
+from django.urls import path, re_path
 
-from tapp.views import FooView
+from tapp.views import FooSkeyView, FooView, foo_ekey_func, foo_skey_func
 
 urlpatterns = [
-    url(r'^admin/', include(admin.site.urls)),
-    url(r'^foo/(?P<slug>[0-9a-zA-Z-_]+.{0,2})/$', FooView.as_view(),
-        name='foo'),
-    # surl('/foo/<ekey:slug>/', FooView.as_view(), name='foo'),
+    path("admin/", admin.site.urls),
+    re_path(
+        r"^foo/(?P<slug>[0-9A-Za-z_-]{32})/$",
+        FooView.as_view(),
+        name="foo",
+    ),
+    re_path(
+        r"^s/(?P<slug>[0-9A-Za-z]{9})/$",
+        FooSkeyView.as_view(),
+        name="foo_skey",
+    ),
+    re_path(
+        r"^fe/(?P<token>[0-9A-Za-z_-]{32})/$",
+        foo_ekey_func,
+        name="foo_ekey_func",
+    ),
+    re_path(
+        r"^fs/(?P<token>[0-9A-Za-z]{9})/$",
+        foo_skey_func,
+        name="foo_skey_func",
+    ),
 ]
